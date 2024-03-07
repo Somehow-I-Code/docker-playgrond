@@ -1,13 +1,13 @@
-import prisma from "../lib/prisma";
+import prisma from '../lib/prisma'
 
 type CreateResourceProps = {
-  name: string;
-  description: string;
+  name: string
+  description: string
   category: {
-    id?: number;
-    name: string;
-  };
-};
+    id?: number
+    name: string
+  }
+}
 
 class ResourceRepository {
   public async create(newResource: CreateResourceProps) {
@@ -15,7 +15,7 @@ class ResourceRepository {
       name,
       description,
       category: { id: categoryId, name: categoryName },
-    } = newResource;
+    } = newResource
 
     const resource = await prisma.resource.create({
       data: {
@@ -32,9 +32,9 @@ class ResourceRepository {
           },
         },
       },
-    });
+    })
 
-    return resource;
+    return resource
   }
 
   public async findAll() {
@@ -42,12 +42,12 @@ class ResourceRepository {
       include: {
         category: true,
       },
-    });
+    })
 
-    return resources;
+    return resources
   }
 }
 
-const resourceRepository = new ResourceRepository();
+const resourceRepository = new ResourceRepository()
 
-export default resourceRepository;
+export default resourceRepository
