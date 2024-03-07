@@ -1,0 +1,30 @@
+services:
+  api:
+    image: node-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    command: npm run dev
+    volumes:
+      - .:/usr/src/app
+      - notused:/usr/src/app/node_modules
+    restart: always
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:16.2
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: docker
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: docker
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  notused:
+  postgres:
