@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
 
-import prisma from "../../lib/prisma";
+import resourceRepository from "../../repositories/resource";
 
 export default async function createResource(fastify: FastifyInstance) {
   fastify.post("/resources", async (request, reply) => {
@@ -14,28 +14,8 @@ export default async function createResource(fastify: FastifyInstance) {
       }),
     });
 
-    const {
-      name,
-      description,
-      category: { id: categoryId, name: categoryName },
-    } = resourceBody.parse(request.body);
-
-    const resource = await prisma.resource.create({
-      data: {
-        name,
-        description,
-        category: {
-          connectOrCreate: {
-            where: {
-              id: categoryId || 0,
-            },
-            create: {
-              name: categoryName,
-            },
-          },
-        },
-      },
-    });
+    const newResource = resourceBody.parse(request.body);
+    const resource = await resourceRepository.create(newResource);
 
     return reply.code(201).send(resource);
   });

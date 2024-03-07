@@ -9,7 +9,7 @@ services:
     command: npm run dev
     volumes:
       - .:/usr/src/app
-      - notused:/usr/src/app/node_modules
+      - /usr/src/app/node_modules
     restart: always
     depends_on:
       - postgres
@@ -26,5 +26,4 @@ services:
     restart: always
 
 volumes:
-  notused:
   postgres:
